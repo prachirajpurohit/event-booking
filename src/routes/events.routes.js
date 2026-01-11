@@ -1,0 +1,16 @@
+import { Router } from "express";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { requireRole } from "../middlewares/role.middleware.js";
+import {
+  createEvent,
+  updateEvent,
+  bookEvent,
+} from "../controllers/event.controller.js";
+
+const router = Router();
+
+router.post("/events", verifyJWT, requireRole("ORGANIZER"), createEvent);
+router.put("/events/:id", verifyJWT, requireRole("ORGANIZER"), updateEvent);
+router.post("/events/:id/book", verifyJWT, requireRole("CUSTOMER"), bookEvent);
+
+export default router;
